@@ -2,7 +2,7 @@
 
 namespace loginTest.Services
 {
-    public interface IUserService
+    public interface IAccountService
     {
         User? ValidateUser(string username, string password);
         bool IsUserExists(string username);

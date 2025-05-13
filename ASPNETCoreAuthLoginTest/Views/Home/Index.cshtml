@@ -1,8 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "首頁";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1 class="display-4 mb-4">歡迎使用學生老師登入系統</h1>
+    <p class="lead">請選擇您的身分登入：</p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <!-- 老師登入按鈕 -->
+        <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="TeacherLogin">
+            老師登入
+        </a>
+
+        <!-- 學生登入按鈕 -->
+        <a class="btn btn-success btn-lg" asp-controller="Account" asp-action="StudentLogin">
+            學生登入
+        </a>
+    </div>
+
+    <p class="mt-5 text-muted">
+        本系統使用 ASP.NET Core MVC 建構
+    </p>
 </div>

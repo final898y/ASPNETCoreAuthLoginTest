@@ -9,12 +9,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";
+        options.LoginPath = "/Home/Index";
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 // 注冊用戶服務，實際應用可能會使用 Scoped 生命週期
-builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IAccountService, AccountService>();
 
 
 var app = builder.Build();

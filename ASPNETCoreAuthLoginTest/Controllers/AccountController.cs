@@ -10,29 +10,28 @@ using System.Threading.Tasks;
 
 public class AccountController : Controller
 {
-    private readonly IUserService _userService; // 您需要實現一個用戶服務來處理用戶數據
+    private readonly IAccountService _accountService; 
 
-    public AccountController(IUserService userService)
+    public AccountController(IAccountService AccountService)
     {
-        _userService = userService;
+        _accountService = AccountService;
     }
 
     [HttpGet]
-    public IActionResult Login(string? returnUrl = null)
+    public IActionResult TeacherLogin()
     {
-        ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+    public async Task<IActionResult> TeacherLogin(LoginViewModel model, string? returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
         if (ModelState.IsValid)
         {
             // 驗證用戶登入信息 (這裡是示例，實際中您需要查詢數據庫)
-            var user = _userService.ValidateUser(model.Username, model.Password);
+            var user = _accountService.ValidateUser(model.Username, model.Password);
             if (user != null)
             {
                 // 創建身份驗證 Cookie
@@ -61,7 +60,58 @@ public class AccountController : Controller
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Dashboard", "Teacher");
+                }
+            }
+            ModelState.AddModelError(string.Empty, "用戶名或密碼不正確");
+        }
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult StudentLogin()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> StudentLogin(LoginViewModel model, string? returnUrl = null)
+    {
+        ViewData["ReturnUrl"] = returnUrl;
+        if (ModelState.IsValid)
+        {
+            // 驗證用戶登入信息 (這裡是示例，實際中您需要查詢數據庫)
+            var user = _accountService.ValidateUser(model.Username, model.Password);
+            if (user != null)
+            {
+                // 創建身份驗證 Cookie
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = model.RememberMe
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Dashboard", "Student");
                 }
             }
             ModelState.AddModelError(string.Empty, "用戶名或密碼不正確");
@@ -82,18 +132,18 @@ public class AccountController : Controller
         if (ModelState.IsValid)
         {
             // 檢查用戶名是否已存在
-            if (_userService.IsUserExists(model.Username))
+            if (_accountService.IsUserExists(model.Username))
             {
                 ModelState.AddModelError("Username", "用戶名已存在");
                 return View(model);
             }
 
             // 創建新用戶 (這裡是示例，實際中您需要儲存到數據庫)
-            var result = _userService.CreateUser(model.Username, model.Email, model.Password);
+            var result = _accountService.CreateUser(model.Username, model.Email, model.Password);
             if (result)
             {
                 // 自動登入新用戶
-                var user = _userService.GetUserByUsername(model.Username);
+                var user = _accountService.GetUserByUsername(model.Username);
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username),
@@ -128,7 +178,7 @@ public class AccountController : Controller
     {
         // 獲取當前登入用戶信息
         var username = User.Identity.Name;
-        var user = _userService.GetUserByUsername(username);
+        var user = _accountService.GetUserByUsername(username);
         return View(user);
     }
 }
