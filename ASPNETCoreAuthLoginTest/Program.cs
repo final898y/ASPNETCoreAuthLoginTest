@@ -1,17 +1,14 @@
 using loginTest.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using loginTest.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddCustomCookieAuthentication();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Home/Index";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-    });
+
 
 // 注冊用戶服務，實際應用可能會使用 Scoped 生命週期
 builder.Services.AddSingleton<IAccountService, AccountService>();
