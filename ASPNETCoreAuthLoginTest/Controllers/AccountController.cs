@@ -31,15 +31,14 @@ public class AccountController : Controller
         if (ModelState.IsValid)
         {
             // 驗證用戶登入信息 (這裡是示例，實際中您需要查詢數據庫)
-            var user = _accountService.ValidateUser(model.Username, model.Password);
-            if (user != null)
+            var ValidateduserDto = _accountService.ValidateUser(model.Username, model.Password);
+            if (ValidateduserDto != null)
             {
                 // 創建身份驗證 Cookie
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Name, ValidateduserDto.Username),
+                    new Claim(ClaimTypes.Role, ValidateduserDto.Role)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -89,7 +88,6 @@ public class AccountController : Controller
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, user.Role)
                 };
 
@@ -147,7 +145,6 @@ public class AccountController : Controller
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, user.Role)
                 };
 

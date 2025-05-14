@@ -1,6 +1,7 @@
 using loginTest.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using loginTest.Auth;
+using ASPNETCoreAuthLoginTest.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,8 @@ builder.Services.AddCustomCookieAuthentication();
 
 
 // 注冊用戶服務，實際應用可能會使用 Scoped 生命週期
-builder.Services.AddSingleton<IAccountService, AccountService>();
-
+builder.Services.AddRepositories(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
