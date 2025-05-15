@@ -1,4 +1,4 @@
-﻿@if (User.Identity.IsAuthenticated)
+﻿@if (User.Identity!=null && User.Identity.IsAuthenticated)
 {
     <li class="nav-item">
         <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
@@ -8,8 +8,4 @@
             <button type="submit" class="nav-link btn btn-link text-dark">登出</button>
         </form>
     </li>
-}
-else
-{
-
 }

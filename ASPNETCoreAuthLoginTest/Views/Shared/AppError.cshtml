@@ -1,0 +1,11 @@
+﻿@model AppErrorViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="text-center mt-5">
+    <h2 class="text-danger">@Model.Title</h2>
+    <p class="mt-3">@Model.Message</p>
+    <a href="@Model.ReturnUrl" class="btn btn-primary mt-4">返回首頁</a>
+</div>

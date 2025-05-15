@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace loginTest.Models
+namespace ASPNETCoreAuthLoginTest.Models
 {
     public class LoginViewModel
     {
         [Required(ErrorMessage = "請輸入用戶名")]
         [Display(Name = "用戶名")]
-        public required string Username { get; set; }
+        public required string UserID { get; set; }
 
         [Required(ErrorMessage = "請輸入密碼")]
         [DataType(DataType.Password)]

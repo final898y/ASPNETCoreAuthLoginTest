@@ -1,8 +1,9 @@
 ﻿using ASPNETCoreAuthLoginTest.Repositorys;
-using loginTest.Models;
+using  ASPNETCoreAuthLoginTest.Models;
 using System.Reflection.PortableExecutable;
+using System.Security.Claims;
 
-namespace loginTest.Services
+namespace  ASPNETCoreAuthLoginTest.Services
 {
     public class AccountService : IAccountService
     {
@@ -14,18 +15,9 @@ namespace loginTest.Services
             _AccountRepos = accountRepos;
         }
 
-        private List<UserDto> _users = new List<UserDto>
+        public UserDto? ValidateUser(string userid, string password,UserRole role)
         {
-            //password=123456
-            new UserDto { Username = "tt",PasswordHash = "$2a$11$bX3apy3i3kcxnC4eAtgC2.jGDj/C6VcYr6T33Fv1xihL.T6yhaRNm", Role = "teacher" },
-            //password=test1234
-            new UserDto { Username = "ss",PasswordHash = "$2a$11$bX3apy3i3kcxnC4eAtgC2.jGDj/C6VcYr6T33Fv1xihL.T6yhaRNm", Role = "student" }
-
-        };
-
-        public UserDto? ValidateUser(string username, string password)
-        {
-            var queryResult = _AccountRepos.GetTeacherUserDto(username);
+            var queryResult = _AccountRepos.GetUserDto(userid, role);
 
             // 檢查使用者是否存在，以及密碼是否驗證成功
             if (queryResult != null && BCrypt.Net.BCrypt.Verify(password, queryResult.PasswordHash))
@@ -47,14 +39,19 @@ namespace loginTest.Services
             return true;
         }
 
-        public UserDto GetUserByUsername(string username)
+        public UserDto? GetUserByUsername(string username, UserRole role)
         {
-            return new UserDto
+            var queryResult = _AccountRepos.GetUserByUsername(username, role);
+            if (queryResult!=null)
             {
-                Username = "",
-                PasswordHash = "",
-                Role = "",
-            };
+                return queryResult;
+
+            }
+            else
+            {
+                return null;
+            }
         }
+    
     }
 }

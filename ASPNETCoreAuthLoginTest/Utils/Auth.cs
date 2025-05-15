@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace loginTest.Auth
+namespace  ASPNETCoreAuthLoginTest.Auth
 {
     public static class CookieAuthConfigurator
     {

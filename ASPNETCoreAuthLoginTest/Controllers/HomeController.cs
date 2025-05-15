@@ -1,8 +1,8 @@
-using loginTest.Models;
+using  ASPNETCoreAuthLoginTest.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace loginTest.Controllers
+namespace  ASPNETCoreAuthLoginTest.Controllers
 {
     public class HomeController : Controller
     {

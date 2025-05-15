@@ -1,5 +1,5 @@
 ﻿using ASPNETCoreAuthLoginTest.Repositorys;
-using loginTest.Services;
+using  ASPNETCoreAuthLoginTest.Services;
 using Microsoft.Data.Sqlite;
 
 namespace ASPNETCoreAuthLoginTest.Utils

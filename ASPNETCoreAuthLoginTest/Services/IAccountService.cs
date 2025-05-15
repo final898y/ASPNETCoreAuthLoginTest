@@ -1,12 +1,12 @@
-﻿using loginTest.Models;
+﻿using  ASPNETCoreAuthLoginTest.Models;
 
-namespace loginTest.Services
+namespace  ASPNETCoreAuthLoginTest.Services
 {
     public interface IAccountService
     {
-        UserDto? ValidateUser(string username, string password);
+        UserDto? ValidateUser(string username, string password,UserRole role);
         bool IsUserExists(string username);
         bool CreateUser(string username, string email, string password);
-        UserDto GetUserByUsername(string username);
+        UserDto? GetUserByUsername(string username, UserRole role);
     }
 }

@@ -1,0 +1,21 @@
+﻿@model ASPNETCoreAuthLoginTest.Models.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "使用者個人資料";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card mt-3" style="max-width: 400px;">
+    <div class="card-body">
+        <h5 class="card-title">帳號資訊</h5>
+
+        <dl class="row">
+            <dt class="col-sm-4">使用者名稱</dt>
+            <dd class="col-sm-8">@Model.UserName</dd>
+
+            <dt class="col-sm-4">角色</dt>
+            <dd class="col-sm-8">@Model.Role</dd>
+        </dl>
+    </div>
+</div>

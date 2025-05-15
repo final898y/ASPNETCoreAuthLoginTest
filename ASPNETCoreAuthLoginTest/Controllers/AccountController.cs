@@ -1,12 +1,12 @@
-﻿using loginTest.Models;
-using loginTest.Services;
+﻿using ASPNETCoreAuthLoginTest.Models;
+using ASPNETCoreAuthLoginTest.Utils;
+using ASPNETCoreAuthLoginTest.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
+
 
 public class AccountController : Controller
 {
@@ -30,14 +30,13 @@ public class AccountController : Controller
         ViewData["ReturnUrl"] = returnUrl;
         if (ModelState.IsValid)
         {
-            // 驗證用戶登入信息 (這裡是示例，實際中您需要查詢數據庫)
-            var ValidateduserDto = _accountService.ValidateUser(model.Username, model.Password);
+            var ValidateduserDto = _accountService.ValidateUser(model.UserID, model.Password,UserRole.Teacher);
             if (ValidateduserDto != null)
             {
                 // 創建身份驗證 Cookie
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, ValidateduserDto.Username),
+                    new Claim(ClaimTypes.Name, ValidateduserDto.UserName),
                     new Claim(ClaimTypes.Role, ValidateduserDto.Role)
                 };
 
@@ -80,14 +79,13 @@ public class AccountController : Controller
         ViewData["ReturnUrl"] = returnUrl;
         if (ModelState.IsValid)
         {
-            // 驗證用戶登入信息 (這裡是示例，實際中您需要查詢數據庫)
-            var user = _accountService.ValidateUser(model.Username, model.Password);
+            var user = _accountService.ValidateUser(model.UserID, model.Password, UserRole.Student);
             if (user != null)
             {
                 // 創建身份驗證 Cookie
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Role, user.Role)
                 };
 
@@ -141,10 +139,10 @@ public class AccountController : Controller
             if (result)
             {
                 // 自動登入新用戶
-                var user = _accountService.GetUserByUsername(model.Username);
+                var user = _accountService.GetUserByUsername(model.Username,UserRole.Teacher);
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.userID),
                     new Claim(ClaimTypes.Role, user.Role)
                 };
 
@@ -173,9 +171,46 @@ public class AccountController : Controller
     [Authorize]
     public IActionResult Profile()
     {
-        // 獲取當前登入用戶信息
-        var username = User.Identity.Name;
-        var user = _accountService.GetUserByUsername(username);
-        return View(user);
+        var username = User.FindFirst(ClaimTypes.Name)?.Value;
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return View("AppError", new AppErrorViewModel
+            {
+                Title = "使用者錯誤",
+                Message = "無法取得使用者名稱，請重新登入。",
+                ReturnUrl = Url.Action("Index", "Home") ?? "/"
+            });
+        }
+
+        if (!User.TryGetUserRole(out var role))
+        {
+            return View("AppError", new AppErrorViewModel
+            {
+                Title = "角色錯誤",
+                Message = "無法確認您的角色權限。",
+                ReturnUrl = Url.Action("Index", "Home") ?? "/"
+            });
+        }
+
+        var user = _accountService.GetUserByUsername(username, role);
+        if (user == null)
+        {
+            return View("AppError", new AppErrorViewModel
+            {
+                Title = "找不到使用者",
+                Message = "找不到您的帳戶資料。",
+                ReturnUrl = Url.Action("Index", "Home") ?? "/"
+            });
+        }
+
+        var viewModel = new UserProfileViewModel
+        {
+            UserName = user.UserName,
+            Role = user.Role
+        };
+
+        return View(viewModel);
     }
+
+
 }

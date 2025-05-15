@@ -1,6 +1,6 @@
-using loginTest.Services;
+using  ASPNETCoreAuthLoginTest.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using loginTest.Auth;
+using  ASPNETCoreAuthLoginTest.Auth;
 using ASPNETCoreAuthLoginTest.Utils;
 
 var builder = WebApplication.CreateBuilder(args);

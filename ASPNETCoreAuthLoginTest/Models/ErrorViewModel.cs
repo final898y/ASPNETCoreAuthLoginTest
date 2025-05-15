@@ -1,4 +1,4 @@
-namespace loginTest.Models
+namespace  ASPNETCoreAuthLoginTest.Models
 {
     public class ErrorViewModel
     {

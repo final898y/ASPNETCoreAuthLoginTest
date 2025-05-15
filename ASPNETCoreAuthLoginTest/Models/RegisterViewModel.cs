@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace loginTest.Models
+namespace ASPNETCoreAuthLoginTest.Models
 {
     public class RegisterViewModel
     {
