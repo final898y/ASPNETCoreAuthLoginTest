@@ -6,7 +6,7 @@ namespace ASPNETCoreAuthLoginTest.Models
     {
         [Required(ErrorMessage = "請輸入用戶名")]
         [Display(Name = "用戶名")]
-        public required string UserID { get; set; }
+        public required string AccountName { get; set; }
 
         [Required(ErrorMessage = "請輸入密碼")]
         [DataType(DataType.Password)]

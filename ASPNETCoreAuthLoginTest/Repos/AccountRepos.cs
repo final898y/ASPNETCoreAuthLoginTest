@@ -10,7 +10,7 @@ namespace ASPNETCoreAuthLoginTest.Repositorys
         {
             _connectionString = connectionString;
         }
-        public UserDto? GetUserDto(string userid, UserRole role)
+        public UserLoginDto? GetUserDto(string accountName, UserRole role)
         {
             try
             {
@@ -20,31 +20,32 @@ namespace ASPNETCoreAuthLoginTest.Repositorys
                 if (role == UserRole.Teacher)
                 {
                     query = @"
-                    SELECT t.Name AS TeacherName, u.PasswordHash, u.Role
+                    SELECT t.Name AS TeacherName, u.PasswordHash, u.Role,u.AccountName
                     FROM Users u
                     JOIN Teachers t ON u.TeacherID = t.TeacherID
-                    WHERE u.Role = 'Teacher' AND u.Username = @userid";
+                    WHERE u.Role = 'Teacher' AND u.AccountName = @accountName";
                 }
                 else {
                     query = @"
-                    SELECT s.Name AS StudentName, u.PasswordHash, u.Role
+                    SELECT s.Name AS StudentName, u.PasswordHash, u.Role,u.AccountName
                     FROM Users u
                     JOIN Students s ON u.StudentID = s.StudentID
-                    WHERE u.Role = 'Student' AND u.Username = @userid";
+                    WHERE u.Role = 'Student' AND u.AccountName = @accountName";
                 }
                 
 
                 using var command = new SqliteCommand(query, connection);
-                command.Parameters.AddWithValue("@userid", userid);
+                command.Parameters.AddWithValue("@accountName", accountName);
 
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    return new UserDto
+                    return new UserLoginDto
                     {
                         UserName = reader.GetString(0),
                         PasswordHash = reader.GetString(1),
-                        Role = reader.GetString(2)
+                        Role = reader.GetString(2),
+                        AccountName = reader.GetString(3)
                     };
                 }
                 else {
@@ -66,7 +67,7 @@ namespace ASPNETCoreAuthLoginTest.Repositorys
             }
         }
 
-        public UserDto? GetUserByUsername(string username, UserRole role)
+        public UserLoginDto? GetUserByUsername(string accountName, UserRole role)
         {
             try
             {
@@ -92,16 +93,16 @@ namespace ASPNETCoreAuthLoginTest.Repositorys
 
 
                 using var command = new SqliteCommand(query, connection);
-                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@username", accountName);
 
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    return new UserDto
+                    return new UserLoginDto
                     {
                         UserName = reader.GetString(0),
                         PasswordHash = reader.GetString(1),
-                        Role = reader.GetString(2)
+                        Role = reader.GetString(2), AccountName = reader.GetString(3)
                     };
                 }
                 else

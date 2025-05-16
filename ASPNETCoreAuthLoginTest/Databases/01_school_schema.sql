@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Courses (
 -- 建立 Users 資料表：登入帳號資訊，分學生或老師
 CREATE TABLE IF NOT EXISTS Users (
     UserID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Username TEXT NOT NULL UNIQUE,
+    AccountName TEXT NOT NULL UNIQUE,
     PasswordHash TEXT NOT NULL,
     Role TEXT NOT NULL CHECK(Role IN ('Student', 'Teacher')),
     StudentID INTEGER,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS Grades (
 );
 
 -- 建立索引以加速查詢（建議針對經常查詢欄位建立索引）
-CREATE INDEX IF NOT EXISTS IX_Users_Username ON Users(Username);
+CREATE INDEX IF NOT EXISTS IX_Users_AccountName ON Users(AccountName);
 CREATE INDEX IF NOT EXISTS IX_Users_StudentID ON Users(StudentID);
 CREATE INDEX IF NOT EXISTS IX_Users_TeacherID ON Users(TeacherID);
 CREATE INDEX IF NOT EXISTS IX_Courses_TeacherID ON Courses(TeacherID);

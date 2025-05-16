@@ -1,5 +1,7 @@
-﻿using ASPNETCoreAuthLoginTest.Repositorys;
-using  ASPNETCoreAuthLoginTest.Services;
+﻿using ASPNETCoreAuthLoginTest.Models;
+using ASPNETCoreAuthLoginTest.Repos;
+using ASPNETCoreAuthLoginTest.Repositorys;
+using ASPNETCoreAuthLoginTest.Services;
 using Microsoft.Data.Sqlite;
 
 namespace ASPNETCoreAuthLoginTest.Utils
@@ -19,6 +21,9 @@ namespace ASPNETCoreAuthLoginTest.Utils
             if (connectionString != null)
             {
                 services.AddScoped<AccountRepos>(provider => new AccountRepos(connectionString));
+                services.AddScoped<IUserRepos<TeacherProfileViewModel>>(provider => new TeacherRepos(connectionString));
+                services.AddScoped<IUserRepos<StudentProfileViewModel>>(provider => new StudentRepos(connectionString));
+
             }
             return services;
         }
@@ -27,7 +32,8 @@ namespace ASPNETCoreAuthLoginTest.Utils
         {
             // 註冊應用邏輯層（Service）
             services.AddScoped<IAccountService, AccountService>();
-
+            services.AddScoped<IUserService<TeacherProfileViewModel>, TeacherService>();
+            services.AddScoped<IUserService<StudentProfileViewModel>, StudentService>();
             return services;
         }
     }

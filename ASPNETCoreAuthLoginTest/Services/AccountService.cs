@@ -15,9 +15,9 @@ namespace  ASPNETCoreAuthLoginTest.Services
             _AccountRepos = accountRepos;
         }
 
-        public UserDto? ValidateUser(string userid, string password,UserRole role)
+        public UserLoginDto? ValidateUser(string accountName, string password,UserRole role)
         {
-            var queryResult = _AccountRepos.GetUserDto(userid, role);
+            var queryResult = _AccountRepos.GetUserDto(accountName, role);
 
             // 檢查使用者是否存在，以及密碼是否驗證成功
             if (queryResult != null && BCrypt.Net.BCrypt.Verify(password, queryResult.PasswordHash))
@@ -29,28 +29,14 @@ namespace  ASPNETCoreAuthLoginTest.Services
         }
 
 
-        public bool IsUserExists(string username)
+        public bool IsUserExists(string accountName)
         {
             return true;
         }
 
-        public bool CreateUser(string username, string email, string password)
+        public bool CreateUser(string accountName, string email, string password)
         {
             return true;
-        }
-
-        public UserDto? GetUserByUsername(string username, UserRole role)
-        {
-            var queryResult = _AccountRepos.GetUserByUsername(username, role);
-            if (queryResult!=null)
-            {
-                return queryResult;
-
-            }
-            else
-            {
-                return null;
-            }
         }
     
     }

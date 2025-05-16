@@ -1,8 +1,8 @@
 ﻿namespace  ASPNETCoreAuthLoginTest.Models
 {
-    public class UserDto
+    public class UserLoginDto
     {
-        public string? userID { get; set; }
+        public required string AccountName { get; set; }
         public required string PasswordHash { get; set; } 
         public required string Role { get; set; }
         public required string UserName { get; set; }

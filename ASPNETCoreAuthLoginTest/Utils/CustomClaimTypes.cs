@@ -2,7 +2,7 @@
 {
     public static class CustomClaimTypes
     {
-        public const string DisplayName = "DisplayName";
+        public const string FullName = "FullName";
 
     }
 }

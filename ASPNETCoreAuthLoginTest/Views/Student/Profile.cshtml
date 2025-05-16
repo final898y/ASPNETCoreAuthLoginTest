@@ -1,7 +1,7 @@
-﻿@model ASPNETCoreAuthLoginTest.Models.UserProfileViewModel
+﻿@model ASPNETCoreAuthLoginTest.Models.StudentProfileViewModel
 
 @{
-    ViewData["Title"] = "使用者個人資料";
+    ViewData["Title"] = "學生個人資料";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -16,6 +16,15 @@
 
             <dt class="col-sm-4">角色</dt>
             <dd class="col-sm-8">@Model.Role</dd>
+
+            <dt class="col-sm-4">帳號名稱</dt>
+            <dd class="col-sm-8">@Model.AccountName</dd>
+
+            <dt class="col-sm-4">年級</dt>
+            <dd class="col-sm-8">@Model.Grade</dd>
+
+            <dt class="col-sm-4">班級</dt>
+            <dd class="col-sm-8">@Model.Class</dd>
         </dl>
     </div>
 </div>
