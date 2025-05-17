@@ -1,4 +1,5 @@
-﻿using ASPNETCoreAuthLoginTest.Models;
+﻿using ASPNETCoreAuthLoginTest.Controllers;
+using ASPNETCoreAuthLoginTest.Models;
 using ASPNETCoreAuthLoginTest.Repos;
 using ASPNETCoreAuthLoginTest.Repositorys;
 using ASPNETCoreAuthLoginTest.Services;
@@ -23,7 +24,6 @@ namespace ASPNETCoreAuthLoginTest.Utils
                 services.AddScoped<AccountRepos>(provider => new AccountRepos(connectionString));
                 services.AddScoped<IUserRepos<TeacherProfileViewModel>>(provider => new TeacherRepos(connectionString));
                 services.AddScoped<IUserRepos<StudentProfileViewModel>>(provider => new StudentRepos(connectionString));
-
             }
             return services;
         }

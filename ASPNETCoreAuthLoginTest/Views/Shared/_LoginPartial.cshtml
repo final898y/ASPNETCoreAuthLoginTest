@@ -3,14 +3,14 @@
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
     var role = User.FindFirst(ClaimTypes.Role)?.Value;
-
+    var fullName = User.FindFirst("FullName")?.Value;
     if (role == "Student" || role == "Teacher")
     {
         var controllerName = role == "Student" ? "Student" : "Teacher";
 
         <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="@controllerName" asp-action="Profile">
-                @User.Identity.Name
+                @fullName
             </a>
         </li>
     }

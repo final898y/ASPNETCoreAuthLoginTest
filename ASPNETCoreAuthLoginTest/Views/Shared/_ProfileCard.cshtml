@@ -1,0 +1,42 @@
+﻿@model dynamic
+
+@{
+    var role = Model.Role;
+    var isTeacher = role == "Teacher";
+    var cardClass = isTeacher ? "border-primary bg-light" : "border-success bg-white";
+    var badgeClass = isTeacher ? "badge bg-primary" : "badge bg-success";
+}
+
+<div class="card @cardClass shadow-sm mx-auto my-4" style="max-width: 500px;">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fs-5 fw-bold">帳號資訊</span>
+        <span class="@badgeClass">@role</span>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">使用者名稱</dt>
+            <dd class="col-sm-8">@Model.UserName</dd>
+
+            <dt class="col-sm-4">帳號名稱</dt>
+            <dd class="col-sm-8">@Model.AccountName</dd>
+
+            @if (isTeacher)
+            {
+                <dt class="col-sm-4">授課科目</dt>
+                <dd class="col-sm-8">@Model.Subject</dd>
+
+                <dt class="col-sm-4">導師班級</dt>
+                <dd class="col-sm-8">@Model.LeadClass</dd>
+            }
+            else
+            {
+                <dt class="col-sm-4">年級</dt>
+                <dd class="col-sm-8">@Model.Grade</dd>
+
+                <dt class="col-sm-4">班級</dt>
+                <dd class="col-sm-8">@Model.Class</dd>
+            }
+        </dl>
+    </div>
+</div>

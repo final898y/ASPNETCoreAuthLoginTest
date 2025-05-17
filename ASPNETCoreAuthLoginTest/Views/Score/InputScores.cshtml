@@ -1,0 +1,54 @@
+﻿@model InputScoresViewModel
+
+@{
+    ViewData["Title"] = "登打與修改成績";
+}
+
+
+<h2>📝 登打或修改成績</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+
+<form>
+    <label for="courseSelect">請選擇課程：</label>
+    <select id="courseSelect" name="SelectedCourseId" class="form-control">
+        @foreach (var course in Model.Courses)
+        {
+            <option value="@course.CourseID">@course.CourseName</option>
+        }
+    </select>
+</form>
+
+<!-- 成績輸入區塊 -->
+<div id="studentScoreFormContainer" class="mt-4"></div>
+
+@section Scripts {
+    <script>
+        document.getElementById('courseSelect').addEventListener('change', function () {
+            const courseId = this.value;
+
+            if (courseId) {
+                fetch(`/Score/GetStudentsByCourse?courseId=${courseId}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('studentScoreFormContainer').innerHTML = html;
+                    });
+            } else {
+                document.getElementById('studentScoreFormContainer').innerHTML = "";
+            }
+        });
+    </script>
+}
